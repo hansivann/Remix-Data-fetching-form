@@ -8,6 +8,7 @@ export async function loader(){
 }
 
 export default function Profile(){
+//add loader data here
 
     return (
         <>
@@ -16,7 +17,7 @@ export default function Profile(){
             {/* {data.map((user) => {
                 return (
                     <>
-                    <p key={user.id}>Name = {user.name} , {user.description}</p>
+                    <p key={user.id}>Name = {user.title} , {user.body}</p>
                     </>
                 )
             })} */}

@@ -33,9 +33,10 @@ export async function action({ request }) {
     },
   })
     .then((response) => response.json())
-    .then((data) => console.log(data));
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err));
 
- 
+
   return redirect('/profile')
 }
 
@@ -45,6 +46,9 @@ export async function action({ request }) {
 export default function Formm() {
   const data = useLoaderData();
 
+  const handleSubmit = ((e) => {
+    e.preventDefault()
+  });
   
   return (
     <div>
@@ -82,7 +86,7 @@ export default function Formm() {
             </label>
           </p>
           <p>
-            <button type="submit">Submit</button>
+            <button type="submit" onSubmit={handleSubmit}>Submit</button>
           </p>
         </fieldset>
       </Form>
