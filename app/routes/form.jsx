@@ -1,7 +1,6 @@
 import { useLoaderData, Form } from "@remix-run/react";
-import { redirect } from "@remix-run/node";
+import { fetch, redirect } from "@remix-run/node";
 import { getSource } from "../api/source";
-//import { addProfile } from "../api/create";
 
 
 //server side
@@ -21,23 +20,28 @@ export async function action({ request }) {
 
   console.log(profile)
   
-   fetch('https://jsonplaceholder.typicode.com/posts', {
-    method: 'POST',
-    body: JSON.stringify({
-      title: profile.title,
-      body: profile.body,
-      userId: 1
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((err) => console.log(err));
+  const values = await
+        fetch('https://jsonplaceholder.typicode.com/posts', {
+          method: 'POST',
+          body: JSON.stringify({
+            title: profile.title,
+            body: profile.body,
+            userId: 1
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
 
+            return redirect('/profile', 201);
 
-  return redirect('/profile')
+          })
+          .catch((err) => console.log(err));
+
+  return values;
 }
 
 

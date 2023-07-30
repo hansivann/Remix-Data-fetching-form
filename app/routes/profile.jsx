@@ -1,14 +1,12 @@
-import {getProfile} from "../api/create"
+//import { useLoaderData } from "@remix-run/react"
 
-export async function loader(){
-   const loadProfile = getProfile()
+// export async function loader(){
 
-   console.log(loadProfile)
-    return loadProfile;
-}
+//}
+
 
 export default function Profile(){
-//add loader data here
+//const data = useLoaderData()
 
     return (
         <>
