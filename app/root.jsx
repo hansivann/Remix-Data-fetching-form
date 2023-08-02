@@ -31,3 +31,27 @@ export default function App() {
     </html>
   );
 }
+
+export function ErrorBoundary({ error }) {
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+      </head>
+      <body>
+        <div className="mb-3">
+          <div className="p-4 rounded shadow-lg border bg-rose-200">
+            <div className="text-gray-600 font-bold text-xl mb-2">
+              <p>Oops.. Something went wrong..</p>
+            </div>
+            <p>
+              {error.message}
+              {error.stack}
+            </p>
+          </div>
+        </div>
+      </body>
+    </html>
+  );
+}

@@ -7,26 +7,6 @@ export const meta = () => {
   ];
 };
 
-// export async function loader({request}){
-//   //if cookie present = welcome back,
-//   //if first time, send first message
-
-//     const cookieHeader = request.headers.get("Cookie");
-//     const hasUserVisitedPage = await hasUserVisited.parse(cookieHeader);
-
-//     const message = hasUserVisitedPage ? "Welcome back!" : "First time"
-
-//     return json(
-//       {message},
-//       {
-//         headers: {
-//           "Set-Cookie": await hasUserVisited.serialize({}),
-//         },
-//       }
-//     );
-
-// }
-
 export default function Index() {
   return (
     <div
@@ -47,9 +27,27 @@ export default function Index() {
   );
 }
 
-// cookie example
 
-// export default function Index(){
-//   const data = useLoaderData();
-//   return <pre>{JSON.stringify(data, null ,2)}</pre>;
-// }
+export function ErrorBoundary({ error }) {
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+      </head>
+      <body>
+        <div className="mb-3">
+          <div className="p-4 rounded shadow-lg border bg-rose-200">
+            <div className="text-gray-600 font-bold text-xl mb-2">
+              <p>Oops.. Something went wrong..</p>
+            </div>
+            <p>
+              {error.message}
+              {error.stack}
+            </p>
+          </div>
+        </div>
+      </body>
+    </html>
+  );
+}

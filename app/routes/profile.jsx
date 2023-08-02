@@ -24,19 +24,22 @@ export async function loader({ request }) {
       "Set-Cookie": await commitSession(session),
     },
   });
+
+  
+
 }
 
 export default function Profile() {
   const data = useLoaderData();
 
-  console.log(data);
-  console.log(data.title);
+  //console.log(data);
+  //console.log(data.title);
   return (
     <>
       <div class="mt-56 sm:mx-auto sm:w-full sm:max-w-md">
         <div class=" bg-gradient-to-b from-orange-200 to-orange-100 py-8 px-6 shadow rounded-lg sm:px-10">
           <h1 class="mb-16 mt-8 font-medium text-5xl">Profile</h1>
-          <div key={data.id}>
+          <div key={data.id} class="text-gray-700 text-lg">
             <p key={data.userId}>Name: {data.title}</p>
             <p>Body: {data.body} </p>
             <p>Username: {data.username}</p>

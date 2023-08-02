@@ -23,7 +23,7 @@ export async function action({ request }) {
     body: JSON.stringify({
       title: formData.get("name"),
       body: formData.get("description"),
-      //userId: 1,
+      userId: 1,
       username: formData.get("username"),
     }),
     headers: {
@@ -32,8 +32,8 @@ export async function action({ request }) {
   })
     .then((response) => response.json())
     .then(async (data) => {
-      console.log(data);
-      console.log(data.title, data.body, data.id, data.userId, data.username);
+     // console.log(data);
+     // console.log(data.title, data.body, data.id, data.userId, data.username);
 
       // put session
       //session
