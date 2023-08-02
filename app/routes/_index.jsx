@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link, useRouteError, isRouteErrorResponse } from "@remix-run/react";
 
 export const meta = () => {
   return [
@@ -6,26 +6,6 @@ export const meta = () => {
     { name: "Form Exercise", content: "Form Exercise" },
   ];
 };
-
-// export async function loader({request}){
-//   //if cookie present = welcome back,
-//   //if first time, send first message
-
-//     const cookieHeader = request.headers.get("Cookie");
-//     const hasUserVisitedPage = await hasUserVisited.parse(cookieHeader);
-
-//     const message = hasUserVisitedPage ? "Welcome back!" : "First time"
-
-//     return json(
-//       {message},
-//       {
-//         headers: {
-//           "Set-Cookie": await hasUserVisited.serialize({}),
-//         },
-//       }
-//     );
-
-// }
 
 export default function Index() {
   return (
@@ -47,9 +27,31 @@ export default function Index() {
   );
 }
 
-// cookie example
+export function ErrorBoundary() {
+  const error = useRouteError();
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>Oops</h1>
+        <p>Status: {error.status}</p>
+        <p>{error.data.message}</p> 
+      </div>
+    );
+    
+  }
 
-// export default function Index(){
-//   const data = useLoaderData();
-//   return <pre>{JSON.stringify(data, null ,2)}</pre>;
-// }
+  let errorMessage = "Unknown error";
+  if (error) {
+    errorMessage = error.message;
+  }
+
+  return (
+    <div className="m-8 text-2xl ">
+      <h1 className="mb-4">Oops..</h1>
+      <p className=" pb-11 ">Something went wrong..</p>
+      <div className=" mt-4 sm:mx-auto sm:w-full sm:max-w-md ">
+        <pre className=" mt-4 ml-4 text-rose-400 text-sm">{errorMessage}</pre>
+      </div>
+    </div>
+  );
+}
