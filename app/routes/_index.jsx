@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link, useRouteError, isRouteErrorResponse } from "@remix-run/react";
 
 export const meta = () => {
   return [
@@ -27,27 +27,31 @@ export default function Index() {
   );
 }
 
+export function ErrorBoundary() {
+  const error = useRouteError();
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>Oops</h1>
+        <p>Status: {error.status}</p>
+        <p>{error.data.message}</p> 
+      </div>
+    );
+    
+  }
 
-export function ErrorBoundary({ error }) {
-  console.error(error);
+  let errorMessage = "Unknown error";
+  if (error) {
+    errorMessage = error.message;
+  }
+
   return (
-    <html>
-      <head>
-        <title>Oh no!</title>
-      </head>
-      <body>
-        <div className="mb-3">
-          <div className="p-4 rounded shadow-lg border bg-rose-200">
-            <div className="text-gray-600 font-bold text-xl mb-2">
-              <p>Oops.. Something went wrong..</p>
-            </div>
-            <p>
-              {error.message}
-              {error.stack}
-            </p>
-          </div>
-        </div>
-      </body>
-    </html>
+    <div className="m-8 text-2xl ">
+      <h1 className="mb-4">Oops..</h1>
+      <p className=" pb-11 ">Something went wrong..</p>
+      <div className=" mt-4 sm:mx-auto sm:w-full sm:max-w-md ">
+        <pre className=" mt-4 ml-4 text-rose-400 text-sm">{errorMessage}</pre>
+      </div>
+    </div>
   );
 }

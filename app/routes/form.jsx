@@ -1,4 +1,10 @@
-import { useLoaderData, Form, useNavigation } from "@remix-run/react";
+import {
+  useLoaderData,
+  Form,
+  useNavigation,
+  useRouteError,
+  isRouteErrorResponse
+} from "@remix-run/react";
 import { fetch, redirect } from "@remix-run/node";
 import { getSource } from "../api/source";
 import { getSession, commitSession } from "../sessions";
@@ -32,8 +38,8 @@ export async function action({ request }) {
   })
     .then((response) => response.json())
     .then(async (data) => {
-     // console.log(data);
-     // console.log(data.title, data.body, data.id, data.userId, data.username);
+      // console.log(data);
+      // console.log(data.title, data.body, data.id, data.userId, data.username);
 
       // put session
       //session
@@ -56,7 +62,8 @@ export async function action({ request }) {
           "Set-Cookie": await commitSession(session),
         },
       });
-    });
+    })
+    .catch((error) => console.log("There is something wrong with the Post", error))
   return value;
 }
 
@@ -135,6 +142,35 @@ export default function Formm() {
             </button>
           </p>
         </Form>
+      </div>
+    </div>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>Oops</h1>
+        <p>Status: {error.status}</p>
+        <p>{error.data.message}</p> 
+      </div>
+    );
+    
+  }
+
+  let errorMessage = "Unknown error";
+  if (error) {
+    errorMessage = error.message;
+  }
+
+  return (
+    <div className="m-8 text-2xl ">
+      <h1 className="mb-4">Oops..</h1>
+      <p className=" pb-11 ">Something went wrong..</p>
+      <div className=" mt-4 sm:mx-auto sm:w-full sm:max-w-md ">
+        <pre className=" mt-4 ml-4 text-rose-400 text-sm">{errorMessage}</pre>
       </div>
     </div>
   );
