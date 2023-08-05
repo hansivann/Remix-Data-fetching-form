@@ -37,7 +37,8 @@ export async function action({ request }) {
   })
     .then((response) => response.json())
     .then(async (data) => {
-      console.log(data.title, data.body, data.id, data.username);
+      
+      console.log(data.title, data.body, data.id, data.userId, data.username);
 
       // put session
       //session
@@ -143,7 +144,6 @@ export default function Formm() {
     </div>
   );
 }
-
 export function ErrorBoundary() {
   const error = useRouteError();
   if (isRouteErrorResponse(error)) {
