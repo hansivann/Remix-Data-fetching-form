@@ -1,4 +1,10 @@
-import { useLoaderData, Form, useNavigation } from "@remix-run/react";
+import {
+  useLoaderData,
+  Form,
+  useNavigation,
+  isRouteErrorResponse,
+  useRouteError,
+} from "@remix-run/react";
 import { fetch, redirect } from "@remix-run/node";
 import { getSource } from "../api/source";
 import { getSession, commitSession } from "../sessions";
@@ -23,7 +29,6 @@ export async function action({ request }) {
     body: JSON.stringify({
       title: formData.get("name"),
       body: formData.get("description"),
-      //userId: 1,
       username: formData.get("username"),
     }),
     headers: {
@@ -32,15 +37,13 @@ export async function action({ request }) {
   })
     .then((response) => response.json())
     .then(async (data) => {
-      
-      console.log(data.title, data.body, data.id, data.userId, data.username);
+      console.log(data.title, data.body, data.id, data.username);
 
       // put session
       //session
       const title = data.title;
       const body = data.body;
       const id = data.id;
-      const userId = data.userId;
       const username = data.username;
 
       const session = await getSession(request.headers.get("Cookie"));
@@ -48,7 +51,6 @@ export async function action({ request }) {
       session.set("title", title);
       session.set("body", body);
       session.set("id", id);
-      session.set("userId", userId);
       session.set("username", username);
 
       return redirect("/profile", {
@@ -74,41 +76,41 @@ export default function Formm() {
   return (
     <div className="mt-56 sm:mx-auto sm:w-full sm:max-w-md ">
       <div className=" bg-gradient-to-b from-orange-200 to-orange-100 py-8 px-6 shadow rounded-lg sm:px-10">
-        <Form method="post" class="mb-0 space-y-6">
-          <b class="mb-16 mt-8 font-medium text-2xl">Sign Up Form</b> <br />
-          <label class="block text-sm font-medium text-gray-700">
+        <Form method="post" className="mb-0 space-y-6">
+          <b className="mb-16 mt-8 font-medium text-2xl">Sign Up Form</b> <br />
+          <label className="block text-sm font-medium text-gray-700">
             Name <br />
-            <div class="mt-1">
+            <div className="mt-1">
               <input
                 name="name"
                 type="text"
                 required
-                class="peer ... w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300 "
+                className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300 "
               />
             </div>
           </label>
           <p>
-            <label class="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700">
               Body <br />
               <input
                 name="description"
                 required
-                class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300"
+                className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300"
               />
             </label>
           </p>
           <p>
-            <label class="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700">
               Username <br />
               <select
                 name="username"
                 required
-                class="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300"
+                className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300"
               >
                 <option value="">Please select</option>
                 {data.map((user) => {
                   return (
-                    <option name="username" key={user.name.children}>
+                    <option name="username" key={user.id}>
                       {user.username}
                     </option>
                   );
@@ -116,25 +118,66 @@ export default function Formm() {
               </select>
             </label>
           </p>
-          <p class="flex items-center">
+          <p className="flex items-center">
             <input
               type="checkbox"
               name="human"
               value="true"
               required
-              class="mr-1 rounded border-gray-300 focus:ring-orange-500"
-            />{" "}
-            <label class="ml-1 block text-sm text-gray-900">I am Human</label>
+              className="mr-1 rounded border-gray-300 focus:ring-orange-500"
+            />
+            <label className="ml-1 block text-sm text-gray-900">
+              I am Human
+            </label>
           </p>
           <p>
             <button
               type="submit"
-              class="bg-orange-400 hover:bg-orange-500 text-white font-medium text-sm py-2 px-4 rounded focus:ring-4 "
+              className="bg-orange-400 hover:bg-orange-500 text-white font-medium text-sm py-2 px-4 rounded focus:ring-4 "
             >
               {busy}
             </button>
           </p>
         </Form>
+      </div>
+    </div>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  if (isRouteErrorResponse(error)) {
+    return (
+      <>
+        <head>
+          <title>Page does not exist</title>
+        </head>
+
+        <body className=" m-11">
+          <h1 className="  text-3xl ">Oops . . .</h1>
+          <div className="ml-11 mt-11 p-4 rounded shadow-lg border bg-rose-100 border-rose-600">
+            <p>Sorry, the page you are looking for does not exist</p>
+            <p>Status: {error.status} </p>
+            <p>{error.data.message}</p>
+          </div>
+        </body>
+      </>
+    );
+  }
+
+  let errorMessage = "Unknown error";
+  if (error) {
+    errorMessage = error.message;
+  }
+
+  return (
+    <div className="m-8 text-2xl ">
+      <h1 className="mb-4">Oops..</h1>
+      <p className=" pb-11 ">Something went wrong..</p>
+      <div className=" sm:mx-auto">
+        <pre className=" flex-auto  mt-11 p-4 rounded shadow-lg border w-fit bg-rose-100 border-rose-600">
+          {errorMessage}
+        </pre>
       </div>
     </div>
   );
