@@ -26,7 +26,7 @@ export async function loader({ request }) {
     return json(data, {
       headers: {
         "Set-Cookie": await commitSession(session),
-      }, 
+      },
     });
   } catch (error) {
     console.log(error);
@@ -36,12 +36,12 @@ export async function loader({ request }) {
 export default function Profile() {
   const data = useLoaderData();
 
-  return ( 
+  return (
     <>
-     <div className="mt-56 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-56 sm:mx-auto sm:w-full sm:max-w-md">
         <div className=" bg-gradient-to-b from-orange-200 to-orange-100 py-8 px-6 shadow rounded-lg sm:px-10">
           <h1 className="mb-16 mt-8 font-medium text-5xl">Profile</h1>
-          <div> 
+          <div>
             <p key={data.id}>Name: {data.title}</p>
             <p>Body: {data.body} </p>
             <p>Username: {data.username}</p>
