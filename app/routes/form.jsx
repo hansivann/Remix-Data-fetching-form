@@ -107,7 +107,7 @@ export default function Formm() {
                 <option value="">Please select</option>
                 {data.map((user) => {
                   return (
-                    <option name="username" key={user.name.children}>
+                    <option name="username" key={user.id}>
                       {user.username}
                     </option>
                   );
