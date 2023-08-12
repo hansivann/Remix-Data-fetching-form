@@ -15,11 +15,17 @@ export default function Index() {
     >
       <h1 className=" mb-16 mt-8 font-medium text-5xl ">Hello</h1>
       <div className=" flex space-x-12 ml-10 mb-5  text-lg">
-        <Link to="../form" className=" hover:text-black text-gray-700">
+        <Link
+          to="../form"
+          className=" hover:text-black hover:underline text-gray-700"
+        >
           Sign Up
         </Link>
         <br />
-        <Link to="../profile" className=" hover:text-black text-gray-700  ">
+        <Link
+          to="../profile"
+          className=" hover:text-black hover:underline text-gray-700"
+        >
           Profile
         </Link>
       </div>

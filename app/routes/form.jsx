@@ -1,9 +1,10 @@
 import {
-  useLoaderData,
-  Form,
   useNavigation,
+  Form,
   isRouteErrorResponse,
   useRouteError,
+  useLoaderData,
+  Link,
 } from "@remix-run/react";
 import { fetch, redirect } from "@remix-run/node";
 import { getSource } from "../api/source";
@@ -16,12 +17,10 @@ export const meta = () => {
   ];
 };
 
-//server side
-//loader
 export async function loader() {
   return getSource();
 }
-//action
+
 export async function action({ request }) {
   let formData = await request.formData();
   const value = await fetch("https://jsonplaceholder.typicode.com/posts", {
@@ -37,8 +36,6 @@ export async function action({ request }) {
   })
     .then((response) => response.json())
     .then(async (data) => {
-      
-     
       // put session
       //session
       const title = data.title;
@@ -62,9 +59,9 @@ export async function action({ request }) {
   return value;
 }
 
-//render
 export default function Formm() {
   const data = useLoaderData();
+
   let navigation = useNavigation();
   let busy =
     navigation.state === "submitting"
@@ -110,7 +107,7 @@ export default function Formm() {
                 <option value="">Please select</option>
                 {data.map((user) => {
                   return (
-                    <option name="username" key={user.id}>
+                    <option name="username" key={user.name.children}>
                       {user.username}
                     </option>
                   );
@@ -130,19 +127,28 @@ export default function Formm() {
               I am Human
             </label>
           </p>
-          <p>
-            <button
-              type="submit"
-              className="bg-orange-400 hover:bg-orange-500 text-white font-medium text-sm py-2 px-4 rounded focus:ring-4 "
+          <div className="flex justify-between">
+            <Link
+              to="/"
+              className=" border border-gray-400 bg-gray-200 text-black hover:bg-gray-400 font-medium text-sm py-2 px-4 rounded focus:ring-4"
             >
-              {busy}
-            </button>
-          </p>
+              Back
+            </Link>
+            <p>
+              <button
+                type="submit"
+                className="bg-orange-400 hover:bg-orange-500 text-white font-medium text-sm py-2 px-4 rounded focus:ring-4"
+              >
+                {busy}
+              </button>
+            </p>
+          </div>
         </Form>
       </div>
     </div>
   );
 }
+
 export function ErrorBoundary() {
   const error = useRouteError();
   if (isRouteErrorResponse(error)) {

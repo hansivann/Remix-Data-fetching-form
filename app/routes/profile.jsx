@@ -1,4 +1,5 @@
 import {
+  Link,
   isRouteErrorResponse,
   useLoaderData,
   useRouteError,
@@ -35,16 +36,27 @@ export async function loader({ request }) {
 
 export default function Profile() {
   const data = useLoaderData();
-
   return (
     <>
       <div className="mt-56 sm:mx-auto sm:w-full sm:max-w-md">
         <div className=" bg-gradient-to-b from-orange-200 to-orange-100 py-8 px-6 shadow rounded-lg sm:px-10">
           <h1 className="mb-16 mt-8 font-medium text-5xl">Profile</h1>
           <div>
-            <p key={data.id}>Name: {data.title}</p>
-            <p>Body: {data.body} </p>
-            <p>Username: {data.username}</p>
+            <form>
+              <p name="title" key={data.id}>
+                Name: {data.title}
+              </p>
+              <p name="body">Body: {data.body} </p>
+              <p name="username">Username: {data.username}</p>
+              <div className="mt-4">
+                <Link
+                  className="border border-gray-400 bg-gray-200 text-black hover:bg-gray-400 font-medium text-sm py-2 px-4 rounded focus:ring-4"
+                  to="/form"
+                >
+                  Back
+                </Link>
+              </div>
+            </form>
           </div>
         </div>
       </div>
