@@ -5,6 +5,7 @@ import {
   useRouteError,
   useLoaderData,
   Link,
+  useActionData,
 } from "@remix-run/react";
 import { fetch, redirect } from "@remix-run/node";
 import { getSource } from "../api/source";
@@ -23,6 +24,36 @@ export async function loader() {
 
 export async function action({ request }) {
   let formData = await request.formData();
+  const form = {
+    title: formData.get("name"),
+    description: formData.get("description"),
+    username: formData.get("username"),
+    human: formData.get("human"),
+  };
+
+  const errors = { title: "", description: "", username: "" };
+
+  if (!form.title) {
+    errors.title = "Please provide your name";
+  }
+
+  if (!form.description) {
+    errors.description = "Please provide your description";
+  }
+
+  if (!form.username) {
+    errors.username = "Please select a username";
+  }
+
+  if (!form.human) {
+    errors.human = "Please check this box";
+  }
+
+  if (errors.name || errors.description || errors.username || errors.human) {
+    const values = Object.fromEntries(formData);
+    return { errors, values };
+  }
+
   const value = await fetch("https://jsonplaceholder.typicode.com/posts", {
     method: "POST",
     body: JSON.stringify({
@@ -61,6 +92,7 @@ export async function action({ request }) {
 
 export default function Formm() {
   const data = useLoaderData();
+  const actionData = useActionData();
 
   let navigation = useNavigation();
   let busy =
@@ -70,10 +102,15 @@ export default function Formm() {
       ? "Submit"
       : "";
 
+  const inputStyle = (
+    fieldName
+  ) => `w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300 
+  ${actionData?.errors[fieldName] ? "border-red-500" : ""}`;
+
   return (
     <div className="mt-56 sm:mx-auto sm:w-full sm:max-w-md ">
       <div className=" bg-gradient-to-b from-orange-200 to-orange-100 py-8 px-6 shadow rounded-lg sm:px-10">
-        <Form method="post" className="mb-0 space-y-6">
+        <Form reloadDocument method="post" className="mb-0 space-y-6">
           <b className="mb-16 mt-8 font-medium text-2xl">Sign Up Form</b> <br />
           <label className="block text-sm font-medium text-gray-700">
             Name <br />
@@ -81,19 +118,25 @@ export default function Formm() {
               <input
                 name="name"
                 type="text"
-                required
-                className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300 "
+                //required
+                className={inputStyle("title")}
               />
+              {actionData?.errors.title && (
+                <p className="text-red-500">{actionData.errors.title} </p>
+              )}
             </div>
           </label>
           <p>
             <label className="block text-sm font-medium text-gray-700">
               Body <br />
-              <input
+              <textarea
                 name="description"
-                required
-                className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300"
+                //required
+                className={inputStyle("description")}
               />
+              {actionData?.errors.description && (
+                <p className="text-red-500">{actionData.errors.description} </p>
+              )}
             </label>
           </p>
           <p>
@@ -101,8 +144,8 @@ export default function Formm() {
               Username <br />
               <select
                 name="username"
-                required
-                className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-300 focus-ring-1 focus:ring-orange-300"
+                //required
+                className={inputStyle("username")}
               >
                 <option value="">Please select</option>
                 {data.map((user) => {
@@ -113,6 +156,9 @@ export default function Formm() {
                   );
                 })}
               </select>
+              {actionData?.errors.username && (
+                <p className="text-red-500">{actionData.errors.username} </p>
+              )}
             </label>
           </p>
           <p className="flex items-center">
@@ -120,12 +166,17 @@ export default function Formm() {
               type="checkbox"
               name="human"
               value="true"
-              required
+              //required
               className="mr-1 rounded border-gray-300 focus:ring-orange-500"
             />
             <label className="ml-1 block text-sm text-gray-900">
               I am Human
             </label>
+            <div>
+              {actionData?.errors.human && (
+                <p className=" pl-7 text-red-500">{actionData.errors.human} </p>
+              )}
+            </div>
           </p>
           <div className="flex justify-between">
             <Link
