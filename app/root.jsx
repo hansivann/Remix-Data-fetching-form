@@ -5,8 +5,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useRouteError,
   isRouteErrorResponse,
+  useRouteError,
 } from "@remix-run/react";
 
 import styles from "./tailwind.css";
@@ -38,18 +38,18 @@ export function ErrorBoundary() {
     return (
       <>
         <head>
-        <title>Oh no</title>
+          <title>Page does not exist</title>
           <Meta />
         </head>
-          <Links />
+        <Links />
         <body className=" m-11">
-            <h1 className="  text-3xl ">Oops . . .</h1>
+          <h1 className="  text-3xl ">Oops . . .</h1>
           <div className="ml-11 mt-11 p-4 rounded shadow-lg border bg-rose-100 border-rose-600">
-            <p>Sorry something went wrong!</p>
+            <p>Sorry, the page you are looking for does not exist</p>
             <p>Status: {error.status} </p>
             <p>{error.data.message}</p>
           </div>
-          </body>
+        </body>
       </>
     );
   }
