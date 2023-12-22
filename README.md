@@ -2,12 +2,17 @@
 This project utilizes Remix to create a dynamic form for fetching data from JSONPlaceholder.typicode.com, serving as a practical testing ground. The application includes error-handling functionality to enhance the user experience.
 
 ## Features:
-- <b>Form Integration:</b> Built a responsive form using Remix.
+- <b>Form Integration:</b> Developed a responsive form using Remix and styled with Tailwind CSS.
 - <b>Data Fetching:</b> Retrieves data from JSONplaceholder API for testing purposes.
 - <b>Error Handling:</b> Implemented error functionality to enhance the robustness of the application.
 - <b>Success Page Display:</b> Upon successful form submission, values are displayed on the next page.
+<br></br>
 
-Feel free to explore and adapt the code to suit your needs!
+Explore the code to understand the integration of Remix and Tailwind CSS for an optimized styling experience.
+
+Feel free to adapt and customize the code according to your specific project requirements!
+
+
 ----
 
 ## Welcome to Remix!
