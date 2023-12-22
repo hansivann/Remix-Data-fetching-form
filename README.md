@@ -1,4 +1,16 @@
-# Welcome to Remix!
+# Data Fetching Form
+This project utilizes Remix to create a dynamic form for fetching data from JSONPlaceholder.typicode.com, serving as a practical testing ground. The application includes error-handling functionality to enhance the user experience.
+
+## Features:
+- <b>Form Integration:</b> Built a responsive form using Remix.
+- <b>Data Fetching:</b> Retrieves data from JSONplaceholder API for testing purposes.
+- <b>Error Handling:</b> Implemented error functionality to enhance the robustness of the application.
+- <b>Success Page Display:</b> Upon successful form submission, values are displayed on the next page.
+
+Feel free to explore and adapt the code to suit your needs!
+----
+
+## Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
 
